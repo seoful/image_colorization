@@ -18,6 +18,7 @@ class LabDataset(Dataset):
         if self.transform is not None:
             img = self.transform(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+        img = img / 255
         l_channel = img[:,:,0]
         a_b_channels = img[:,:,1:]
         return l_channel, a_b_channels
