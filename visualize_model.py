@@ -1,10 +1,8 @@
-
 import matplotlib.pyplot as plt
-from skimage.color import rgb2lab, lab2rgb
 import time
-import numpy as np
 import torch
-import colour
+from color_spaces import lab_to_rgb
+
 
 def visualize(model, data, save=True):
     model.net_G.eval()
@@ -30,16 +28,4 @@ def visualize(model, data, save=True):
         ax.axis("off")
     plt.show()
     if save:
-        fig.savefig(f"colorization_{time.time()}.png")
-
-def lab_to_rgb(L, ab):
-    """
-    Takes a batch of images
-    """
-    Lab = torch.cat([L, ab], dim=1).permute(0, 2, 3, 1).cpu().numpy()
-    rgb_imgs = []
-    for img in Lab:
-        img_xyz = colour.Oklab_to_XYZ(img)
-        img_rgb = colour.XYZ_to_sRGB(img_xyz)
-        rgb_imgs.append(img_rgb)
-    return np.stack(rgb_imgs, axis=0)
+        fig.savefig(f"images/colorization_{time.time()}.png")
