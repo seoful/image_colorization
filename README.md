@@ -1,5 +1,9 @@
 # Image colorization
 
+Before usage run the following to download models:
+
+```python download_models.py ```
+
 To colorize image run:
 
 ```python model_predict.py <SOURCE IMAGE> <OUTPUT IMAGE NAME>```
