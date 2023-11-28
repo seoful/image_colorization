@@ -43,11 +43,17 @@ class OkLabColorizationDataset(ColorizationDataset):
         img = Image.open(self.paths[idx]).convert("RGB")
         img = self.transforms(img)
         img = np.array(img) / 255
-        return rgb_to_lab(img)
+        return rgb_to_lab(img, "Oklab")
 
 
 # A handy function to make our dataloaders
-def make_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):
+def make_oklab_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):
+    dataset = OkLabColorizationDataset(**kwargs)
+    dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=n_workers,
+                            pin_memory=pin_memory)
+    return dataloader
+
+def make_lab_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):
     dataset = OkLabColorizationDataset(**kwargs)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=n_workers,
                             pin_memory=pin_memory)

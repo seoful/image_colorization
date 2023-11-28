@@ -4,7 +4,7 @@ import torch
 from color_spaces import lab_to_rgb
 
 
-def visualize(model, data, save=True):
+def visualize(model, data, save=True, space="Lab"):
     model.net_G.eval()
     with torch.no_grad():
         model.setup_input(data)
@@ -13,8 +13,8 @@ def visualize(model, data, save=True):
     fake_color = model.fake_color.detach()
     real_color = model.ab
     L = model.L
-    fake_imgs = lab_to_rgb(L, fake_color)
-    real_imgs = lab_to_rgb(L, real_color)
+    fake_imgs = lab_to_rgb(L, fake_color, space)
+    real_imgs = lab_to_rgb(L, real_color, space)
     fig = plt.figure(figsize=(15, 8))
     for i in range(5):
         ax = plt.subplot(3, 5, i + 1)
