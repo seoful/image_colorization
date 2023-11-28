@@ -47,14 +47,14 @@ class OkLabColorizationDataset(ColorizationDataset):
 
 
 # A handy function to make our dataloaders
-def make_oklab_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):
+def make_oklab_dataloaders(batch_size=16, n_workers=8, pin_memory=True, **kwargs):
     dataset = OkLabColorizationDataset(**kwargs)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=n_workers,
                             pin_memory=pin_memory)
     return dataloader
 
-def make_lab_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):
-    dataset = OkLabColorizationDataset(**kwargs)
+def make_lab_dataloaders(batch_size=16, n_workers=8, pin_memory=True, **kwargs):
+    dataset = ColorizationDataset(**kwargs)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=n_workers,
                             pin_memory=pin_memory)
     return dataloader

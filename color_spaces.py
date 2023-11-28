@@ -2,21 +2,29 @@ from colour import Oklab_to_XYZ, XYZ_to_sRGB, sRGB_to_XYZ, XYZ_to_Oklab, XYZ_to_
 import torch
 import numpy as np
 from torchvision import transforms
+from skimage.color import rgb2lab, lab2rgb
 
 
 def lab_to_rgb(L, ab, space="Lab"):
     """
     Takes a batch of images
     """
-    Lab = torch.cat([L, ab], dim=1).permute(0, 2, 3, 1).cpu().numpy()
-    rgb_imgs = []
-    for img in Lab:
-        if space == "Lab":
-            img_xyz = Lab_to_XYZ(img)
-        if space == "Oklab":
+    if space == "Lab":
+        L = (L + 1.) * 50.
+        ab = ab * 110.
+        Lab = torch.cat([L, ab], dim=1).permute(0, 2, 3, 1).cpu().numpy()
+        rgb_imgs = []
+        for img in Lab:
+            img_rgb = lab2rgb(img)
+            rgb_imgs.append(img_rgb)
+        return np.stack(rgb_imgs, axis=0)
+    if space == "Oklab":
+        Lab = torch.cat([L, ab], dim=1).permute(0, 2, 3, 1).cpu().numpy()
+        rgb_imgs = []
+        for img in Lab:
             img_xyz = Oklab_to_XYZ(img)
-        img_rgb = XYZ_to_sRGB(img_xyz)
-        rgb_imgs.append(img_rgb)
+            img_rgb = XYZ_to_sRGB(img_xyz)
+            rgb_imgs.append(img_rgb)
     return np.stack(rgb_imgs, axis=0)
 
 
